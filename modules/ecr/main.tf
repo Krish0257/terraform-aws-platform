@@ -43,13 +43,12 @@ resource "aws_ecr_lifecycle_policy" "this" {
       },
       {
         rulePriority = 2
-        description  = "Retain recent tagged images"
+        description  = "Retain recent images"
 
         selection = {
-          tagStatus     = "tagged"
-          tagPrefixList = ["*"]
-          countType     = "imageCountMoreThan"
-          countNumber   = var.tagged_image_retention
+          tagStatus   = "any"
+          countType   = "imageCountMoreThan"
+          countNumber = var.tagged_image_retention
         }
 
         action = {

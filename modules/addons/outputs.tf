@@ -1,22 +1,17 @@
 output "addon_names" {
-  description = "Names of the installed EKS addons"
-  value = [
-    for addon in aws_eks_addon.this : addon.addon_name
-  ]
-}
+  description = "Installed EKS add-ons."
 
-output "addon_arns" {
-  description = "ARNs of the installed EKS addons"
   value = {
     for name, addon in aws_eks_addon.this :
-    name => addon.arn
+    name => addon.addon_name
   }
 }
 
-output "addon_statuses" {
-  description = "Current status of the installed EKS addons"
+output "addon_versions" {
+  description = "Installed EKS add-on versions."
+
   value = {
     for name, addon in aws_eks_addon.this :
-    name => addon.status
+    name => addon.addon_version
   }
 }

@@ -40,9 +40,6 @@ module "iam" {
   )
 }
 
-###############################################
-# EKS
-###############################################
 
 ###############################################
 # EKS
@@ -63,5 +60,128 @@ module "eks" {
   depends_on = [
     module.vpc,
     module.iam
+  ]
+}
+
+################################ ECR #################################3
+
+###############################################
+# ECR
+###############################################
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  repository_name = "${var.project_name}-app"
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "${var.project_name}-ecr"
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  )
+
+  depends_on = [
+    module.eks
+  ]
+}
+
+###############################################
+# GitHub OIDC
+###############################################
+
+module "github_oidc" {
+  source = "../../modules/github-oidc"
+
+  github_organization = "Krish0257"
+
+  github_repository = "terraform-aws-platform"
+
+  role_name = "github-actions-oidc"
+
+  branch = "main"
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser",
+    "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  ]
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "github-actions-oidc"
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  )
+
+  depends_on = [
+    module.ecr,
+    module.eks
+  ]
+}
+
+###############################################
+# EKS Add-ons
+###############################################
+
+module "addons" {
+  source = "../../modules/addons"
+
+  cluster_name    = module.eks.cluster_name
+  cluster_version = module.eks.cluster_version
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "${var.project_name}-addons"
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  )
+
+  depends_on = [
+    module.eks
+  ]
+}
+
+
+###############################################
+# NGINX Ingress Controller
+###############################################
+
+module "ingress_nginx" {
+  source = "../../modules/ingress-nginx"
+
+  namespace        = "ingress-nginx"
+  create_namespace = true
+
+  release_name = "ingress-nginx"
+
+  chart_version = "4.12.3"
+
+  values_files = []
+
+  timeout = 900
+  wait    = true
+
+  atomic          = true
+  cleanup_on_fail = true
+
+  dependency_update = true
+
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "ingress-nginx"
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  )
+
+  depends_on = [
+    module.addons
   ]
 }
