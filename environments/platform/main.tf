@@ -1,15 +1,15 @@
-###############################################
-# NGINX Ingress Controller
-###############################################
-
 module "ingress_nginx" {
   source = "../../modules/ingress-nginx"
+
+  providers = {
+    kubernetes = kubernetes
+    helm       = helm
+  }
 
   namespace        = "ingress-nginx"
   create_namespace = true
 
   release_name = "ingress-nginx"
-
   chart_version = "4.12.3"
 
   values_files = []
@@ -24,42 +24,43 @@ module "ingress_nginx" {
   tags = var.common_tags
 }
 
-###############################################
-# Prometheus & Grafana
-###############################################
-# module "prometheus_grafana" { 
- # source = "../../modules/prometheus-grafana"
+module "prometheus_grafana" {
+  source = "../../modules/prometheus-grafana"
 
-#chart_version = "77.11.0"
+  providers = {
+    kubernetes = kubernetes
+    helm       = helm
+  }
 
-#  depends_on = [
- #   module.ingress_nginx
- # ]
-# }
+  chart_version = "77.11.0"
 
-
-###############################################
-###############################################
-# ArgoCD
-###############################################
+  depends_on = [
+    module.ingress_nginx
+  ]
+}
 
 module "argocd" {
   source = "../../modules/argocd"
 
+  providers = {
+    kubernetes = kubernetes
+    helm       = helm
+  }
+
   chart_version = "8.2.6"
 
-  #depends_on = [
- #   module.prometheus_grafana
-  #]
+  depends_on = [
+    module.prometheus_grafana
+  ]
 }
-###############################################
-# Argo Rollouts
-###############################################
-
-
 
 module "argo_rollouts" {
   source = "../../modules/argo-rollouts"
+
+  providers = {
+    kubernetes = kubernetes
+    helm       = helm
+  }
 
   chart_version = "2.40.5"
 
