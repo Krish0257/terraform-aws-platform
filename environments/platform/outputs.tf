@@ -4,12 +4,12 @@
 
 output "cluster_name" {
   description = "EKS Cluster Name"
-  value       = data.aws_eks_cluster.this.name
+  value       = data.terraform_remote_state.dev.outputs.cluster_name
 }
 
 output "cluster_endpoint" {
   description = "EKS Cluster Endpoint"
-  value       = data.aws_eks_cluster.this.endpoint
+  value       = data.terraform_remote_state.dev.outputs.cluster_endpoint
 }
 
 ###############################################
@@ -30,10 +30,10 @@ output "ingress_namespace" {
 # Prometheus & Grafana
 ###############################################
 
-#output "monitoring_namespace" {
-#  description = "Monitoring Namespace"
-#  value       = module.prometheus_grafana.namespace
-# }
+output "monitoring_namespace" {
+  description = "Monitoring Namespace"
+  value       = module.prometheus_grafana.namespace
+}
 
 ###############################################
 # ArgoCD

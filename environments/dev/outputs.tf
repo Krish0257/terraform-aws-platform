@@ -31,3 +31,24 @@ output "nat_gateway_ids" {
   description = "NAT Gateway IDs"
   value       = module.vpc.nat_gateway_ids
 }
+
+
+
+###############################################
+# EKS
+###############################################
+
+output "cluster_name" {
+  description = "EKS Cluster Name"
+  value       = module.eks.cluster_name
+}
+
+output "cluster_endpoint" {
+  description = "EKS Cluster Endpoint"
+  value       = module.eks.cluster_endpoint
+}
+
+output "cluster_certificate_authority_data" {
+  description = "EKS Cluster CA Data"
+  value       = module.eks.cluster_certificate_authority_data
+}

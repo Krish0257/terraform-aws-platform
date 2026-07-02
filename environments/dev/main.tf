@@ -91,13 +91,19 @@ module "ecr" {
 ###############################################
 # GitHub OIDC
 ###############################################
+###############################################
+# GitHub OIDC
+###############################################
 
 module "github_oidc" {
   source = "../../modules/github-oidc"
 
   github_organization = "Krish0257"
 
-  github_repository = "terraform-aws-platform"
+  github_repositories = [
+    "terraform-aws-platform",
+    "flask-rollouts-demo"
+  ]
 
   role_name = "github-actions-oidc"
 
@@ -148,40 +154,3 @@ module "addons" {
 }
 
 
-###############################################
-# NGINX Ingress Controller
-###############################################
-
-module "ingress_nginx" {
-  source = "../../modules/ingress-nginx"
-
-  namespace        = "ingress-nginx"
-  create_namespace = true
-
-  release_name = "ingress-nginx"
-
-  chart_version = "4.12.3"
-
-  values_files = []
-
-  timeout = 900
-  wait    = true
-
-  atomic          = true
-  cleanup_on_fail = true
-
-  dependency_update = true
-
-  tags = merge(
-    var.common_tags,
-    {
-      Name        = "ingress-nginx"
-      Environment = var.environment
-      ManagedBy   = "Terraform"
-    }
-  )
-
-  depends_on = [
-    module.addons
-  ]
-}

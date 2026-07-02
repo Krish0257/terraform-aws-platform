@@ -3,9 +3,9 @@ variable "github_organization" {
   type        = string
 }
 
-variable "github_repository" {
-  description = "GitHub repository name"
-  type        = string
+variable "github_repositories" {
+  description = "GitHub repositories allowed to assume the IAM role"
+  type        = list(string)
 }
 
 variable "role_name" {
@@ -21,19 +21,18 @@ variable "branch" {
 }
 
 variable "managed_policy_arns" {
-  description = "Managed IAM policies to attach to the GitHub Actions role"
+  description = "List of managed IAM policies to attach"
   type        = list(string)
-  default     = []
 }
 
 variable "max_session_duration" {
-  description = "Maximum STS session duration in seconds"
+  description = "Maximum GitHub Actions session duration"
   type        = number
   default     = 3600
 }
 
 variable "tags" {
-  description = "Common resource tags"
+  description = "Tags applied to IAM resources"
   type        = map(string)
   default     = {}
 }

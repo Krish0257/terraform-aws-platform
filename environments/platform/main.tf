@@ -9,7 +9,7 @@ module "ingress_nginx" {
   namespace        = "ingress-nginx"
   create_namespace = true
 
-  release_name = "ingress-nginx"
+  release_name  = "ingress-nginx"
   chart_version = "4.12.3"
 
   values_files = []
