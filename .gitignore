@@ -3,10 +3,21 @@
 *.tfstate
 *.tfstate.*
 crash.log
-terraform.tfvars
-*.tfvars
-*.tfvars.json
+crash.*.log
+*.tfplan
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
 .terraform.lock.hcl
+
+# Terraform Variables
+*.auto.tfvars
+terraform.tfvars
+
+# Sensitive Files
+*.pem
+*.key
 
 # IDE
 .vscode/
@@ -15,3 +26,6 @@ terraform.tfvars
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
