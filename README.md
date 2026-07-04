@@ -1,40 +1,42 @@
-# Terraform AWS Platform
+# 🚀 Terraform AWS Platform
 
-> Enterprise-grade AWS Kubernetes Platform provisioned using Terraform.
+> Enterprise-grade AWS infrastructure and Kubernetes platform provisioning using Terraform.
 
 ![Terraform](https://img.shields.io/badge/Terraform-1.8+-623CE4?logo=terraform)
 ![AWS](https://img.shields.io/badge/AWS-EKS-FF9900?logo=amazonaws)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-v1.34-326CE5?logo=kubernetes)
-![ArgoCD](https://img.shields.io/badge/GitOps-ArgoCD-EF7B4D)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## Overview
+# 📖 Overview
 
-This repository provisions a complete **enterprise-ready Kubernetes platform on AWS** using Terraform.
+**terraform-aws-platform** provisions a complete production-style Kubernetes platform on AWS using Terraform.
 
-The platform includes networking, IAM, Amazon EKS, monitoring, ingress, GitOps, and progressive delivery components that serve as the foundation for deploying cloud-native applications.
+The platform serves as the foundation for deploying cloud-native applications by provisioning networking, IAM, Amazon EKS, ingress, monitoring, GitOps, and progressive delivery components.
 
-The infrastructure is modular, reusable, and follows Infrastructure as Code (IaC) best practices.
+This repository focuses only on **platform provisioning**.
 
----
-
-# Architecture
-
-![AWS Platform Architecture](docs/screenshots/aws-platform-architecture.png)
+Application deployment is maintained in a separate repository.
 
 ---
 
-# Platform Components
+# 🏗️ AWS Platform Architecture
 
-The platform provisions the following components:
+<p align="center">
+<img src="docs/screenshots/Aws.png" width="100%">
+</p>
 
-### AWS Infrastructure
+---
+
+# ⚙️ Platform Components
+
+## AWS Infrastructure
 
 - Amazon VPC
-- Public & Private Subnets
 - Internet Gateway
+- Public Subnets
+- Private Subnets
 - NAT Gateway
 - Route Tables
 - Security Groups
@@ -43,52 +45,55 @@ The platform provisions the following components:
 - Managed Node Groups
 - Amazon ECR
 
-### Kubernetes Platform
+---
+
+## Kubernetes Platform
 
 - NGINX Ingress Controller
-- ArgoCD
-- Argo Rollouts
 - Prometheus
 - Grafana
 - Alertmanager
 - Metrics Server
+- ArgoCD
+- Argo Rollouts
 
 ---
 
-# Architecture Stack
+# 🧱 Terraform Module Architecture
 
-```
-Terraform
-        │
-        ▼
-AWS Infrastructure
-        │
-        ├── VPC
-        ├── IAM
-        ├── Networking
-        ├── Amazon EKS
-        └── Managed Node Groups
-                │
-                ▼
-Kubernetes Platform
-        │
-        ├── NGINX Ingress
-        ├── Prometheus
-        ├── Grafana
-        ├── ArgoCD
-        ├── Argo Rollouts
-        └── Metrics Server
-```
+<p align="center">
+<img src="docs/screenshots/Terraform module_architecture.png" width="100%">
+</p>
 
 ---
 
-# Repository Structure
+# ☸️ Kubernetes Platform Services
 
-```
+<p align="center">
+<img src="docs/screenshots/Kubernetes platform service.png" width="100%">
+</p>
+
+---
+
+# 🚀 Platform Provisioning Workflow
+
+<p align="center">
+<img src="docs/screenshots/Terraform platform provisioning.png" width="100%">
+</p>
+
+---
+
+# 📂 Repository Structure
+
+```text
 terraform-aws-platform/
 
 ├── docs/
 │   └── screenshots/
+│       ├── Aws.png
+│       ├── Kubernetes platform service.png
+│       ├── Terraform module_architecture.png
+│       └── Terraform platform provisioning.png
 │
 ├── environments/
 │   ├── dev/
@@ -107,57 +112,57 @@ terraform-aws-platform/
 │   └── vpc/
 │
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
 ---
 
-# Terraform Modules
+# 📦 Terraform Modules
 
-| Module | Description |
-|----------|-------------|
-| vpc | Creates AWS networking infrastructure |
-| iam | Creates IAM roles and policies |
-| eks | Provisions Amazon EKS cluster |
-| ecr | Creates Amazon ECR repositories |
-| github-oidc | Configures GitHub OIDC authentication |
-| ingress-nginx | Installs NGINX Ingress Controller |
-| prometheus-grafana | Deploys Prometheus & Grafana |
-| argocd | Installs ArgoCD |
-| argo-rollouts | Installs Argo Rollouts |
-| addons | Kubernetes platform add-ons |
+| Module | Purpose |
+|----------|----------|
+| VPC | Creates AWS networking resources |
+| IAM | Creates IAM Roles & Policies |
+| EKS | Provisions Amazon EKS Cluster |
+| ECR | Creates Amazon ECR Repository |
+| GitHub OIDC | GitHub authentication using OIDC |
+| Ingress NGINX | Deploys NGINX Ingress Controller |
+| Prometheus-Grafana | Monitoring & Observability |
+| ArgoCD | GitOps Platform |
+| Argo Rollouts | Progressive Delivery |
+| Addons | Common Kubernetes add-ons |
 
 ---
 
-# Technology Stack
+# 🛠️ Technology Stack
 
 | Category | Technology |
 |-----------|------------|
 | Infrastructure as Code | Terraform |
-| Cloud Provider | AWS |
-| Container Orchestration | Amazon EKS |
-| Networking | VPC |
+| Cloud Platform | AWS |
+| Kubernetes | Amazon EKS |
 | Container Registry | Amazon ECR |
 | GitOps | ArgoCD |
 | Progressive Delivery | Argo Rollouts |
 | Monitoring | Prometheus |
-| Visualization | Grafana |
+| Dashboards | Grafana |
 | Ingress | NGINX Ingress Controller |
 
 ---
 
-# Prerequisites
+# 📋 Prerequisites
 
 - AWS Account
 - AWS CLI
-- Terraform 1.8+
+- Terraform >= 1.8
 - kubectl
 - Helm
 - Git
 
 ---
 
-# Deployment
+# 🚀 Deployment
 
 ## Clone Repository
 
@@ -201,9 +206,9 @@ terraform apply
 
 ---
 
-# Verify Cluster
+# 🔍 Verify Cluster
 
-Configure kubeconfig:
+Configure kubeconfig
 
 ```bash
 aws eks update-kubeconfig \
@@ -211,7 +216,7 @@ aws eks update-kubeconfig \
 --name <cluster-name>
 ```
 
-Verify nodes:
+Verify Worker Nodes
 
 ```bash
 kubectl get nodes
@@ -219,13 +224,15 @@ kubectl get nodes
 
 ---
 
-# Verify Platform Components
+# 🔎 Verify Platform
+
+Check Platform Components
 
 ```bash
 kubectl get pods -A
 ```
 
-Expected namespaces:
+Expected Namespaces
 
 - kube-system
 - ingress-nginx
@@ -235,102 +242,61 @@ Expected namespaces:
 
 ---
 
-# Platform Services
+# ✨ Features
 
-Verify Ingress Controller
-
-```bash
-kubectl get pods -n ingress-nginx
-```
-
-Verify Monitoring Stack
-
-```bash
-kubectl get pods -n monitoring
-```
-
-Verify ArgoCD
-
-```bash
-kubectl get pods -n argocd
-```
-
-Verify Argo Rollouts
-
-```bash
-kubectl get pods -n argo-rollouts
-```
-
----
-
-# Screenshots
-
-## AWS Platform Architecture
-
-![Architecture](docs/screenshots/aws-platform-architecture.png)
-
----
-
-## Terraform Module Architecture
-
-![Modules](docs/screenshots/terraform-modules.png)
-
----
-
-## Kubernetes Platform Services
-
-![Platform](docs/screenshots/kubernetes-platform-services.png)
-
----
-
-## Platform Provisioning Flow
-
-![Provisioning](docs/screenshots/platform-provisioning-flow.png)
-
----
-
-# Features
-
-- Modular Terraform Architecture
-- Reusable Infrastructure Modules
+- Enterprise Modular Terraform Design
+- AWS Well-Architected Principles
 - Amazon EKS
-- Enterprise Networking
-- IAM Best Practices
-- GitHub OIDC Support
+- Production Networking
+- GitHub OIDC Authentication
 - Kubernetes Platform Automation
 - GitOps Ready
 - Progressive Delivery Ready
-- Observability Platform
+- Monitoring & Observability
 - Infrastructure as Code
+- Reusable Terraform Modules
 
 ---
 
-# Future Enhancements
+# 🔮 Future Enhancements
 
 - AWS Load Balancer Controller
 - ExternalDNS
-- Cluster Autoscaler
 - Karpenter
-- Velero Backup
+- Cluster Autoscaler
+- Velero
 - Loki
 - Tempo
 - Thanos
 - Multi-Environment Support
-- Multi-Cluster Support
+- Multi-Cluster Deployment
 
 ---
 
-# Related Repository
+# 🔗 Related Repository
 
-**Application Repository**
+### Application Repository
 
-➡️ **flask-rollouts-demo**
+**flask-rollouts-demo**
 
-Demonstrates GitOps, CI/CD, Canary Deployments, Automated Analysis, and Rollbacks using the platform created by this repository.
+Demonstrates:
+
+- GitHub Actions CI/CD
+- Docker
+- Amazon ECR
+- Helm
+- ArgoCD
+- Argo Rollouts
+- Canary Deployment
+- Automated Rollback
+- Prometheus Metrics
+- Grafana Dashboards
+
+Built on top of this platform repository.
 
 ---
 
-# Author
+# 👨‍💻 Author
 
 **Murali Krishna**
 
@@ -338,10 +304,10 @@ Cloud & DevOps Engineer
 
 **Skills**
 
-AWS • Terraform • Kubernetes • Amazon EKS • ArgoCD • Argo Rollouts • Prometheus • Grafana • GitHub Actions • Docker
+AWS • Terraform • Kubernetes • Amazon EKS • ArgoCD • Argo Rollouts • Prometheus • Grafana • Docker • GitHub Actions
 
 ---
 
-## License
+# 📄 License
 
-This project is licensed under the MIT License.
+Licensed under the MIT License.
